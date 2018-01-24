@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-
-# Load Libraries
+#  Load Libraries
 import sys
 import urllib.request as req
 import urllib.parse as parse
