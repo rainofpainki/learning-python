@@ -62,9 +62,9 @@ def analyze_html(url, root_url):
     if savepath is None: return # 다운로드 실패한 경우 실행하지 않음
     if savepath in proc_files: return  # 이미 처리된 경우 실행하지 않음
     proc_files[savepath] = True
-    # print("analyze_html=", url)
+    print("analyze_html=", url)
 
-    #링크 추출
+    # 링크 추출
     html = open(savepath, "r", encoding="utf-8").read()
     links = enum_links(html, url)
 
