@@ -12,11 +12,18 @@ def enum_links(html, base):
     soup = BeautifulSoup(html, "html.parser")
     links = soup.select("link[rel='stylesheet']") # CSS
     links += soup.select("a[href]") # 링크
+    links += soup.select("script[src]") # Javascript
     result = []
 
     for a in links:
         # href 속성을 추출한다.
-        href = a.attrs['href']
+        if 'href' in a.attrs:
+            href = a.attrs['href']
+        elif 'src' in  a.attrs:  # href가 없고 src가 있으면 src 속성을 추출한다
+            href = a.attrs['src']
+        else:
+            continue
+
         # urljoin을 이용하여 절대 경로로 변환
         url = urljoin(base, href)
         result.append(url)
@@ -55,7 +62,7 @@ def analyze_html(url, root_url):
     if savepath is None: return # 다운로드 실패한 경우 실행하지 않음
     if savepath in proc_files: return  # 이미 처리된 경우 실행하지 않음
     proc_files[savepath] = True
-    print("analyze_html=", url)
+    # print("analyze_html=", url)
 
     #링크 추출
     html = open(savepath, "r", encoding="utf-8").read()
@@ -64,7 +71,7 @@ def analyze_html(url, root_url):
     for link_url in links:
         # 링크가 루트 이외의 경로를 나타낸다면 무시
         if link_url.find(root_url) != 0:
-            if not re.search(r".css$", link_url): continue
+            if not re.search(r".css$", link_url) and not re.search(r".js$", link_url): continue
 
         # HTML 이라면
         if re.search(r".(html|htm)$", link_url):
