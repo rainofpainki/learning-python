@@ -25,4 +25,3 @@ pre = clf.predict(xor_data) # 데이터를 예측한다
 # 정답률 구하기
 ac_score = metrics.accuracy_score(xor_label, pre)
 print("정답률 = ", (ac_score*100), "%")
-
